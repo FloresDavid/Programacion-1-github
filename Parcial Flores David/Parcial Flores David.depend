@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1525741221 source:c:\users\alumno\desktop\parcial flores david\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.c"
+	"proveedores.h"
+	"menu.c"
+
+1525741197 c:\users\alumno\desktop\parcial flores david\funciones.c
+	<stdio.h>
+	<stdlib.h>
+
+1525739042 c:\users\alumno\desktop\parcial flores david\proveedores.h
+
+1525740243 c:\users\alumno\desktop\parcial flores david\menu.c
+
