@@ -34,7 +34,8 @@ int main()
                 informar(productos);
                 break;
             case 5:
-                listar(productos, proveedores, 4);
+                listar(productos);
+                listarConProveedores(productos, proveedores, 4);
                 break;
             case 6:
                 seguir = 'n';

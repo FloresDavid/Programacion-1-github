@@ -342,7 +342,7 @@ void informar(eProducto produc[])
     printf("%d\n\n", cantidadProductosMayoresADiez);
 }
 
-void listar(eProducto produc[], eProveedor prov[], int tamProv)
+void listar(eProducto produc[])
 {
     eProducto auxProduc;
     int totalImportes = 0;
@@ -362,83 +362,82 @@ void listar(eProducto produc[], eProveedor prov[], int tamProv)
 
 
     printf("-----Listado de todos los productos.-----\n");
-    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proveedor  |\n");
     printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         for (int j = i+1; j < TAM+1; j++)
         {
-            if (produc[i].importe < produc[j].importe)
+            if (produc[i].importe < produc[j].importe && produc[i].flagProd == 0)
             {
                 auxProduc = produc[i];
                 produc[i] = produc[j];
                 produc[j] = auxProduc;
             }
         }
-        printf("\n\n\n PROOVEDORES\n");
-        for (int i = 0; i < 4; i++)
-        {
-            printf("%d ) %s\n", prov[i].codProveedor, prov[i].descripcion);
-        }
-        printf("\n\n\n");
         if (produc[i].flagProd == 0)
         {
-            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |     %d     |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
     printf("\n\n\n-----Listado de todos los productos menores o iguales a 10.-----\n");
-    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proveedor  |\n");
     printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].cantidad <= 10)
         {
-            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |     %d     |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
     printf("\n\n\n-----Listado de los productos mayores a 10.-----\n");
-    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proveedor  |\n");
     printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].cantidad > 10)
         {
-            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |     %d     |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
     printf("\n\n\n-----Listado de los productos que superan el promedio de los importes.-----\n");
-    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proveedor  |\n");
     printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].importe > promedioImportes)
         {
-            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |     %d     |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
     printf("\n\n\n-----Listado de los productos que no superan el promedio de los importes.-----\n");
-    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proveedor  |\n");
     printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].importe < promedioImportes)
         {
-            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |     %d     |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
+}
 
-    proovedorMostrandoProductos(produc, prov, tamProv);
 
+void listarConProveedores(eProducto produc[], eProveedor prov[], int tamProv)
+{
+    productosProvistosPorProveedor(produc, prov, tamProv);
     productosPorUnProveedor(produc, prov, tamProv);
-
+    proovedorMostrandoProductos(produc, prov, tamProv);
+    proveedorConProductoMasCaro(produc, prov, tamProv);
+    proveedorConProductoMasBarato(produc, prov, tamProv);
 }
 
 int validarString (char cadena[])
@@ -472,43 +471,118 @@ int validarNumero (char numero[])
     return esNumero;
 }
 
+void proveedorConProductoMasCaro (eProducto produc[], eProveedor prov[], int tamProv)
+{
+    int masCaro;
+    int codigo;
+    char productoMasCaro[50];
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if ((i == 0 || produc[i].importe > masCaro) && produc[i].flagProd == 0)
+        {
+            masCaro = produc[i].importe;
+            codigo = produc[i].codProveedor;
+            strcpy(productoMasCaro, produc[i].descripcion);
+        }
+    }
+
+    for (int j = 0; j < tamProv; j++)
+    {
+        if (prov[j].codProveedor == codigo)
+        {
+            printf("\n\n\n-----El proveedor con el producto mas caro es: %s, y el producto es: %s-----\n\n", prov[j].descripcion, productoMasCaro);
+        }
+    }
+}
+
+
+void proveedorConProductoMasBarato(eProducto produc[], eProveedor prov[], int tamProv)
+{
+    int masBarato;
+    int codigo;
+    char productoMasBarato[50];
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if ((i == 0 || produc[i].importe > masBarato) && produc[i].flagProd == 0)
+        {
+            masBarato = produc[i].importe;
+            codigo = produc[i].codProveedor;
+            strcpy(productoMasBarato, produc[i].descripcion);
+        }
+    }
+
+    for (int j = 0; j < tamProv; j++)
+    {
+        if (prov[j].codProveedor == codigo)
+        {
+            printf("\n\n\n-----El proveedor con el producto mas caro es: %s, y el producto es: %s-----\n\n", prov[j].descripcion, productoMasBarato);
+        }
+    }
+}
 
 void proovedorMostrandoProductos ( eProducto productos[], eProveedor proveedores[], int tamProv)
 {
     int codigo;
+    int codigoMin;
     int contador = 0;
-    int maximo = 0;
+    int maximo;
+    int minimo;
 
-    for (int i = 0; i < tamProv; i++)   //RECORRE VECTOR DE PROVEEDORES
+    for (int i = 0; i < tamProv; i++)
     {
-        for (int j = 0; j < TAM; j++)   //RECORRE VECTOR DE RODUCTOS
+        for (int j = 0; j < TAM; j++)
         {
-            if(productos[j].codProveedor == proveedores[i].codProveedor && productos[j].flagProd == 0) //COMPARA EL CODIGO DE PROOVEDOR DEL VECTOR DE
-            {                                                                                          //PROOVEDORES CON EL CODIGO DE PROOVEDOR DEL
-                contador++;    //SI LA CONDICION ES VERDADERA, SUMA 1 AL CONTADOR                      // VECTOR DE PRODUCTOS SOLAMENTE SI ESTA EL
-            }                                                                                          // PRODUCTO ESTA ACTIVO (EL FLAG ES = 0)
+            if(productos[j].codProveedor == proveedores[i].codProveedor && productos[j].flagProd == 0)
+            {
+                contador++;
+            }
         }
-        if (contador > maximo)          // SI EL CONTADOR ES MAYOR AL MAXIMO ENTRA AL IF
+        if (contador > maximo || i == 0)
         {
-            maximo = contador;                          //GUARDA EL NUEVO MAXIMO
-            codigo = proveedores[i].codProveedor;       //Y GUARDA EL CODIGO DEL PROOVEDOR
+            maximo = contador;
+            codigo = proveedores[i].codProveedor;
         }
+        if (contador < minimo || i == 0)
+        {
+            minimo = contador;
+            codigoMin = proveedores[i].codProveedor;
+        }
+
     }
 
     for (int i = 0; i < tamProv; i++)
     {
         if (proveedores[i].codProveedor == codigo)
         {
-            printf("\n\n\n----------El proveedor que provee mas productos es: %s----------\n", proveedores[i].descripcion);
+            printf("\n\n\n-----El proveedor que provee mas productos es: %s-----\n\n", proveedores[i].descripcion);
             break;
         }
     }
 
-    for (int i = 0; i < TAM; i++)                   // VUELVE A RECORRER EL ARRAY DE RODUCTOS
+    for (int i = 0; i < TAM; i++)
     {
-        if(productos[i].codProveedor == codigo && productos[i].flagProd == 0)  // SI EL CODIGO DE PROOVEDORES DEL PRODUCTO EN LA POSICION I COINCIDE
-        {                                                                      // CON EL CODIGO GUARDADO(QUE ES EL QUE MAS PRODUCTOS VENDIO), ENTRA
-            printf("Producto: %s\n", productos[i].descripcion);             //ACA MUESTRA EL NOMBRE DEL PRODUCTO, SIEMPRE Y CUANDO CUMPLA LA CONDICION
+        if(productos[i].codProveedor == codigo && productos[i].flagProd == 0)
+        {
+            printf("Productos: %s\n", productos[i].descripcion);
+        }
+    }
+
+    for (int i = 0; i < tamProv; i++)
+    {
+        if (proveedores[i].codProveedor == codigoMin)
+        {
+            printf("\n\n\n-----El proveedor que provee menos productos es: %s-----\n\n", proveedores[i].descripcion);
+            break;
+        }
+    }
+
+    for (int i = 0; i < TAM; i++)
+    {
+        if(productos[i].codProveedor == codigoMin && productos[i].flagProd == 0)
+        {
+            printf("Productos: %s\n", productos[i].descripcion);
         }
     }
 }
@@ -518,31 +592,55 @@ void productosPorUnProveedor(eProducto productos[], eProveedor proveedores[], in
 {
     char sProvElegido[10];
     int provElegido;
+    int esNumero;
 
-    printf("Indique el codigo del proveedor deseado.\n");
+    printf("\n\n\nIndique el codigo del proveedor deseado.\n");
 
     for (int i = 0; i < tamProv; i++)
     {
-        printf("%d ) %s\n", proveedores[i].codProveedor, proveedores[i].descripcion);
+        printf("%d) %s\n", proveedores[i].codProveedor, proveedores[i].descripcion);
     }
     gets(sProvElegido);
+    esNumero = validarNumero(sProvElegido);
+
+    while (esNumero == 1)
+    {
+        printf("Error, no existe un proveedor con ese codigo, reingrese.\n\n");
+        gets(sProvElegido);
+        esNumero = validarNumero(sProvElegido);
+    }
+    provElegido = atoi(sProvElegido);
 
     for (int i = 0; i < tamProv; i++)
     {
         if (proveedores[i].codProveedor == provElegido)
         {
-            printf("---------- %d ----------\n", proveedores[i].descripcion);
+            printf("\n\n\n----------Productos de %s: ----------\n", proveedores[i].descripcion);
             break;
         }
     }
-
-    printf("Productos: \n");
 
     for (int j = 0; j < TAM; j++)
     {
         if (productos[j].codProveedor == provElegido && productos[j].flagProd == 0)
         {
             printf("%s\n", productos[j].descripcion);
+        }
+    }
+}
+
+void productosProvistosPorProveedor(eProducto productos[], eProveedor proveedores[], int tamProv)
+{
+    for (int i = 0; i < tamProv; i++)
+    {
+        printf("\n\n\n-----Proveedor: %s-----\n\n", proveedores[i].descripcion);
+        printf("Productos: \n\n");
+        for (int j = 0; j < TAM; j++)
+        {
+            if(productos[j].codProveedor == proveedores[i].codProveedor && productos[j].flagProd == 0)
+            {
+                printf("%s\n", productos[j].descripcion);
+            }
         }
     }
 }
