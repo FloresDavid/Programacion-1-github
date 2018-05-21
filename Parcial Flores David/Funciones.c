@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "proveedores.h"
 #define TAM 10
 
 typedef struct
@@ -10,7 +12,6 @@ typedef struct
     int cantidad;
     int codProveedor;
     int flagProd;
-
 }eProducto;
 
 void inicializarProductos(eProducto produc[])
@@ -21,50 +22,72 @@ void inicializarProductos(eProducto produc[])
     }
 }
 
-void ingresarProducto(eProducto produc[])
+void ingresarProducto(eProducto produc[], eProveedor prov[], int tamProv)
 {
     eProducto nuevoProducto;
     char sImporte[10];
     char sCantidad[10];
-    char sCodigoProv[2];
-
+    char sCodigoProv[10];
+    char sDescripcion[50];
+    int esString;
+    int esNumero;
 
     printf ("Ingrese la descripcion del producto. \n\n");
-    scanf("%s", nuevoProducto.descripcion);
+    gets(nuevoProducto.descripcion);
+    esString = validarString(nuevoProducto.descripcion);
+
+    while (esString == 1)
+    {
+        printf("Error. Descripcion incorrecta, reingrese la descripcion: ");
+        gets(nuevoProducto.descripcion);
+        esString = validarString(nuevoProducto.descripcion);
+    }
 
     printf("Ingrese el importe.\n\n");
-    scanf("%s", sImporte);
+    gets(sImporte);
+    esNumero = validarNumero(sImporte);
     nuevoProducto.importe = atoi(sImporte);
 
-    while (nuevoProducto.importe < 1)
+    while (esNumero == 1 || nuevoProducto.importe < 1)
     {
-        printf("Error, reingrese el importe.\n\n");
-        scanf("%s", sImporte);
+        printf("Error. Importe incorrecto, reingrese el Importe: ");
+        gets(sImporte);
+        esNumero = validarNumero(sImporte);
         nuevoProducto.importe = atoi(sImporte);
     }
 
     printf("Ingrese la cantidad.\n\n");
-    scanf("%s", sCantidad);
+    gets(sCantidad);
+    esNumero = validarNumero(sCantidad);
     nuevoProducto.cantidad = atoi(sCantidad);
 
-    while (nuevoProducto.cantidad < 1)
+    while (nuevoProducto.cantidad < 1 || esNumero == 1)
     {
         printf("Error, reingrese la cantidad.\n\n");
-        scanf("%s", sCantidad);
+        gets(sCantidad);
+        esNumero = validarNumero(sCantidad);
         nuevoProducto.cantidad = atoi(sCantidad);
+    }
+    for (int i = 0; i < tamProv; i++)
+    {
+        printf("Ingrese %d para seleccionar al proveedor %s.\n", prov[i].codProveedor, prov[i].descripcion);
     }
 
     printf("Ingrese el codigo del proveedor correspondiente.\n\n");
-    scanf("%s", sCodigoProv);
+    gets(sCodigoProv);
+    esNumero = validarNumero(sCodigoProv);
     nuevoProducto.codProveedor = atoi(sCodigoProv);
 
-    while (nuevoProducto.codProveedor < 1)
+    while (nuevoProducto.codProveedor < 1 || nuevoProducto.codProveedor > tamProv || esNumero == 1)
     {
         printf("Error, reingrese el codigo del proveedor correspondiente.\n\n");
-        scanf("%s", sCodigoProv);
+        gets(sCodigoProv);
+        esNumero = validarNumero(sCodigoProv);
         nuevoProducto.codProveedor = atoi(sCodigoProv);
     }
+
     nuevoProducto.flagProd = 0;
+
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 1)
@@ -78,17 +101,22 @@ void ingresarProducto(eProducto produc[])
 
 void eliminarProducto(eProducto prod[])
 {
-    char sCodProducto[2];
+    char sCodProducto[10];
     int codProducto;
+    char sOpcion[5];
+    int opcion;
+    int esNumero;
 
     printf("Ingrese el codigo del producto a eliminar. \n");
-    scanf("%s", sCodProducto);
+    gets(sCodProducto);
+    esNumero = validarNumero(sCodProducto);
     codProducto = atoi(sCodProducto);
 
-    while (codProducto < 1)
+    while (codProducto < 1 || esNumero == 1)
     {
         printf("Error, reingrese el codigo del producto a eliminar. \n");
-        scanf("%s", sCodProducto);
+        gets(sCodProducto);
+        esNumero = validarNumero(sCodProducto);
         codProducto = atoi(sCodProducto);
     }
 
@@ -96,8 +124,31 @@ void eliminarProducto(eProducto prod[])
     {
         if (prod[i].flagProd == 0 && prod[i].codProducto == codProducto)
         {
-            prod[i].flagProd = 1;
-            printf("Baja exitosa!\n");
+            printf("El producto es: %s, esta seguro que desea eliminarlo?", prod[i].descripcion);
+            printf("1) Si.");
+            printf("2) No.");
+
+            gets(sOpcion);
+            esNumero = validarNumero(sOpcion);
+            opcion = atoi(sOpcion);
+
+            while (opcion < 1 || opcion > 2 || esNumero == 1)
+            {
+                printf("Error, reingrese la opcion. \n");
+                gets(sOpcion);
+                esNumero = validarNumero(sOpcion);
+                opcion = atoi(sOpcion);
+            }
+
+            if (opcion == 1)
+            {
+                prod[i].flagProd = 1;
+                printf("Baja exitosa!\n");
+            }
+            else
+            {
+                printf("Se ha cancelado la baja del producto.\n");
+            }
             break;
         }
     }
@@ -105,23 +156,27 @@ void eliminarProducto(eProducto prod[])
 
 void modificarProducto(eProducto prod[])
 {
-    char sCodProducto[2];
+    char sCodProducto[10];
     int codProducto;
-    char sOpcion[1];
+    char sOpcion[5];
     int opcion = -1;
     int indice;
     char sImporte[10];
     char sCantidad [10];
-    char sCodigoProv[2];
+    char sCodigoProv[10];
+    int esNumero;
+    int esString;
 
     printf("Ingrese el codigo del producto a modificar. \n");
-    scanf("%s", sCodProducto);
+    gets(sCodProducto);
+    esNumero = validarNumero(sCodProducto);
     codProducto = atoi(sCodProducto);
 
-    while (codProducto < 1)
+    while (codProducto < 1 || esNumero == 1)
     {
         printf("Error, reingrese el codigo del producto a modificar. \n");
-        scanf("%s", sCodProducto);
+        gets(sCodProducto);
+        esNumero = validarNumero(sCodProducto);
         codProducto = atoi(sCodProducto);
     }
 
@@ -141,13 +196,15 @@ void modificarProducto(eProducto prod[])
         printf("4) Modificar codigo de proveedor.\n");
         printf("5) Salir.\n");
 
-        scanf("%s", sOpcion);
+        gets(sOpcion);
+        esNumero = validarNumero(sOpcion);
         opcion = atoi(sOpcion);
 
-        while (opcion < 1)
+        while (opcion < 1 || opcion > 5 || esNumero == 1)
         {
             printf("Error, reingrese la opcion.\n\n");
-            scanf("%s", sOpcion);
+            gets(sOpcion);
+            esNumero = validarNumero(sOpcion);
             opcion = atoi(sOpcion);
         }
 
@@ -155,45 +212,59 @@ void modificarProducto(eProducto prod[])
         {
             case 1:
                 printf ("Ingrese la descripcion del producto. \n\n");
-                fflush(prod[indice].descripcion);
-                scanf("%s", prod[indice].descripcion);
+                fflush(stdin);
+                gets(prod[indice].descripcion);
+                esString = validarString(prod[indice].descripcion);
+
+                while (esString == 1)
+                {
+                    printf ("Error. Reingrese la descripcion del producto. \n\n");
+                    gets(prod[indice].descripcion);
+                    esString = validarString(prod[indice].descripcion);
+                }
                 break;
 
             case 2:
                 printf("Ingrese el importe.\n\n");
-                scanf("%s", sImporte);
+                gets(sImporte);
+                esNumero = validarNumero(sImporte);
                 prod[indice].importe = atoi(sImporte);
 
-                while (prod[indice].importe < 1)
+                while (prod[indice].importe < 1 || esNumero == 1)
                 {
                     printf("Error, reingrese el importe.\n\n");
-                    scanf("%s", sImporte);
+                    gets(sImporte);
+                    esNumero = validarNumero(sImporte);
                     prod[indice].importe = atoi(sImporte);
                 }
                 break;
 
             case 3:
                 printf("Ingrese la cantidad.\n\n");
-                scanf("%s", sCantidad);
+                gets(sCantidad);
+                esNumero = validarNumero(sCantidad);
                 prod[indice].cantidad = atoi(sCantidad);
 
-                while (prod[indice].cantidad < 1)
+                while (prod[indice].cantidad < 1 || esNumero == 1)
                 {
                     printf("Error, reingrese la cantidad.\n\n");
-                    scanf("%s", sCantidad);
+                    gets(sCantidad);
+                    esNumero = validarNumero(sCantidad);
                     prod[indice].cantidad = atoi(sCantidad);
                 }
                 break;
 
             case 4:
                 printf("Ingrese el codigo del proveedor correspondiente.\n\n");
-                scanf("%s", sCodigoProv);
+                gets(sCodigoProv);
+                esNumero = validarNumero(sCodigoProv);
                 prod[indice].codProveedor = atoi(sCodigoProv);
 
-                while (prod[indice].codProveedor < 1)
+                while (prod[indice].codProveedor < 1 || esNumero == 1)
                 {
                     printf("Error, reingrese el codigo del proveedor correspondiente.\n\n");
-                    scanf("%s", sCodigoProv);
+                    getc(sCodigoProv);
+                    esNumero = validarNumero(sCodigoProv);
                     prod[indice].codProveedor = atoi(sCodigoProv);
                 }
                 break;
@@ -201,7 +272,7 @@ void modificarProducto(eProducto prod[])
                 opcion = 0;
                 break;
             default:
-                printf("Opcion incorrecta!!  \n\n");
+                printf("Opcion incorrecta!!\n\n");
         }
     }
 }
@@ -215,7 +286,6 @@ void informar(eProducto produc[])
     int cantidadImportesInferiores = 0;
     int cantidadProductosMenoresOIgualesADiez = 0;
     int cantidadProductosMayoresADiez = 0;
-
 
     for (int i = 0; i < TAM; i++)
     {
@@ -270,12 +340,9 @@ void informar(eProducto produc[])
     printf("%d\n\n", cantidadProductosMenoresOIgualesADiez);
     printf("----------Cantidad de productos cuyo stock es menor o igual a 10.----------\n");
     printf("%d\n\n", cantidadProductosMayoresADiez);
-
-
-
-
 }
-void listar(eProducto produc[])
+
+void listar(eProducto produc[], eProveedor prov[], int tamProv)
 {
     eProducto auxProduc;
     int totalImportes = 0;
@@ -295,6 +362,8 @@ void listar(eProducto produc[])
 
 
     printf("-----Listado de todos los productos.-----\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
@@ -307,49 +376,173 @@ void listar(eProducto produc[])
                 produc[j] = auxProduc;
             }
         }
+        printf("\n\n\n PROOVEDORES\n");
+        for (int i = 0; i < 4; i++)
+        {
+            printf("%d ) %s\n", prov[i].codProveedor, prov[i].descripcion);
+        }
+        printf("\n\n\n");
         if (produc[i].flagProd == 0)
         {
-            printf("%d  %s  %d  %d  %d\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
-    printf("-----Listado de todos los productos menores o iguales a 10.-----\n");
+    printf("\n\n\n-----Listado de todos los productos menores o iguales a 10.-----\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].cantidad <= 10)
         {
-            printf("%d  %s  %d  %d  %d\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
-    printf("-----Listado de los productos mayores a 10.-----\n");
+    printf("\n\n\n-----Listado de los productos mayores a 10.-----\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].cantidad > 10)
         {
-            printf("%d  %s  %d  %d  %d\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
-    printf("-----Listado de los productos que superan el promedio de los importes.-----\n");
+    printf("\n\n\n-----Listado de los productos que superan el promedio de los importes.-----\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].importe > promedioImportes)
         {
-            printf("%d  %s  %d  %d  %d\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
         }
     }
 
-    printf("-----Listado de los productos que no superan el promedio de los importes.-----\n");
+    printf("\n\n\n-----Listado de los productos que no superan el promedio de los importes.-----\n");
+    printf("|  Codigo de Producto  |  Descripcion  |  Importe  |  Cantidad  |  Proovedor  |\n");
+    printf("|                      |               |           |            |             |\n");
 
     for (int i = 0; i < TAM; i++)
     {
         if (produc[i].flagProd == 0 && produc[i].importe < promedioImportes)
         {
-            printf("%d  %s  %d  %d  %d\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+            printf("|         %4d         |%11s    |   %5d   |    %3d     |      %3d    |\n", produc[i].codProducto, produc[i].descripcion, produc[i].importe, produc[i].cantidad, produc[i].codProveedor);
+        }
+    }
+
+    proovedorMostrandoProductos(produc, prov, tamProv);
+
+    productosPorUnProveedor(produc, prov, tamProv);
+
+}
+
+int validarString (char cadena[])
+{
+    int esNumero = 0;
+
+    for (int i = 0; i < strlen(cadena); i++)
+    {
+        if (isalpha(cadena[i]) == 0)
+        {
+            esNumero = 1;
+        }
+    }
+    return esNumero;
+}
+
+int validarNumero (char numero[])
+{
+    int esNumero = 0;
+    int len;
+
+    len = strlen(numero);
+
+    for (int i = 0; i < len; i++)
+    {
+        if (isdigit(numero[i]) == 0)
+        {
+            esNumero = 1;
+        }
+    }
+    return esNumero;
+}
+
+
+void proovedorMostrandoProductos ( eProducto productos[], eProveedor proveedores[], int tamProv)
+{
+    int codigo;
+    int contador = 0;
+    int maximo = 0;
+
+    for (int i = 0; i < tamProv; i++)   //RECORRE VECTOR DE PROVEEDORES
+    {
+        for (int j = 0; j < TAM; j++)   //RECORRE VECTOR DE RODUCTOS
+        {
+            if(productos[j].codProveedor == proveedores[i].codProveedor && productos[j].flagProd == 0) //COMPARA EL CODIGO DE PROOVEDOR DEL VECTOR DE
+            {                                                                                          //PROOVEDORES CON EL CODIGO DE PROOVEDOR DEL
+                contador++;    //SI LA CONDICION ES VERDADERA, SUMA 1 AL CONTADOR                      // VECTOR DE PRODUCTOS SOLAMENTE SI ESTA EL
+            }                                                                                          // PRODUCTO ESTA ACTIVO (EL FLAG ES = 0)
+        }
+        if (contador > maximo)          // SI EL CONTADOR ES MAYOR AL MAXIMO ENTRA AL IF
+        {
+            maximo = contador;                          //GUARDA EL NUEVO MAXIMO
+            codigo = proveedores[i].codProveedor;       //Y GUARDA EL CODIGO DEL PROOVEDOR
+        }
+    }
+
+    for (int i = 0; i < tamProv; i++)
+    {
+        if (proveedores[i].codProveedor == codigo)
+        {
+            printf("\n\n\n----------El proveedor que provee mas productos es: %s----------\n", proveedores[i].descripcion);
+            break;
+        }
+    }
+
+    for (int i = 0; i < TAM; i++)                   // VUELVE A RECORRER EL ARRAY DE RODUCTOS
+    {
+        if(productos[i].codProveedor == codigo && productos[i].flagProd == 0)  // SI EL CODIGO DE PROOVEDORES DEL PRODUCTO EN LA POSICION I COINCIDE
+        {                                                                      // CON EL CODIGO GUARDADO(QUE ES EL QUE MAS PRODUCTOS VENDIO), ENTRA
+            printf("Producto: %s\n", productos[i].descripcion);             //ACA MUESTRA EL NOMBRE DEL PRODUCTO, SIEMPRE Y CUANDO CUMPLA LA CONDICION
         }
     }
 }
 
+
+void productosPorUnProveedor(eProducto productos[], eProveedor proveedores[], int tamProv)
+{
+    char sProvElegido[10];
+    int provElegido;
+
+    printf("Indique el codigo del proveedor deseado.\n");
+
+    for (int i = 0; i < tamProv; i++)
+    {
+        printf("%d ) %s\n", proveedores[i].codProveedor, proveedores[i].descripcion);
+    }
+    gets(sProvElegido);
+
+    for (int i = 0; i < tamProv; i++)
+    {
+        if (proveedores[i].codProveedor == provElegido)
+        {
+            printf("---------- %d ----------\n", proveedores[i].descripcion);
+            break;
+        }
+    }
+
+    printf("Productos: \n");
+
+    for (int j = 0; j < TAM; j++)
+    {
+        if (productos[j].codProveedor == provElegido && productos[j].flagProd == 0)
+        {
+            printf("%s\n", productos[j].descripcion);
+        }
+    }
+}

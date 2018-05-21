@@ -3,24 +3,26 @@
 #include "funciones.c"
 #include "proveedores.h"
 #include "menu.c"
-#define TAM 10
 
 int main()
 {
-    eProveedor proveedores[] = {{1, "David"},{2, "Jose"}, {3, "Micaela"}, {4, "Carolina"}};
+    eProveedor proveedores[] = {{1, "David"}, {2, "Jose"}, {3, "Micaela"}, {4, "Matias"}};
     eProducto productos[TAM];
 
-    inicializarProductos(productos);
     int opcion;
+    char sOpcion[1];
+    int esNumero;
+    char seguir = 's';
 
-    opcion = menu();
+    inicializarProductos(productos);
 
-    while (opcion != 0)
+    while(seguir == 's')
     {
+        opcion = menu();
         switch (opcion)
         {
             case 1:
-                ingresarProducto(productos);
+                ingresarProducto(productos, proveedores, 4);
                 break;
             case 2:
                 modificarProducto(productos);
@@ -32,10 +34,13 @@ int main()
                 informar(productos);
                 break;
             case 5:
-                listar(productos);
+                listar(productos, proveedores, 4);
                 break;
-        }
+            case 6:
+                seguir = 'n';
+                break;
         opcion = menu();
+        }
     }
 }
 

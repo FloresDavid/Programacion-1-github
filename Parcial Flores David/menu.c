@@ -2,6 +2,7 @@ int menu()
 {
     char sOpcion[1];
     int opcion;
+    int esNumero;
 
     printf("\nIngrese la opcion que quiera utilizar.\n");
     printf("1) Ingresar producto.\n");
@@ -11,20 +12,17 @@ int menu()
     printf("5) Listar.\n");
     printf("6) Salir.\n");
 
-    scanf("%s", sOpcion);
+    fflush(stdin);
+    gets(sOpcion);
+    esNumero = validarNumero(sOpcion);
     opcion = atoi(sOpcion);
 
-    while (opcion < 1)
+    while (esNumero == 1 || opcion < 1 || opcion > 6)
     {
-        printf("Error, reingrese la opcion.\n\n");
-        scanf("%s", sOpcion);
+        printf("Error. Opcion incorrecto, reingrese la opcion deseada: ");
+        gets(sOpcion);
+        esNumero = validarNumero(sOpcion);
         opcion = atoi(sOpcion);
     }
-
-    if(opcion == 6)
-    {
-        opcion = 0;
-    }
-
     return opcion;
 }

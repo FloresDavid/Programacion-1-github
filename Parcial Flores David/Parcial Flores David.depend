@@ -14,3 +14,20 @@
 
 1525740243 c:\users\alumno\desktop\parcial flores david\menu.c
 
+1526922418 source:f:\usuarios\alumno\escritorio\parcial flores david\main.c
+	<stdio.h>
+	<stdlib.h>
+	"funciones.c"
+	"proveedores.h"
+	"menu.c"
+
+1526922441 f:\usuarios\alumno\escritorio\parcial flores david\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"proveedores.h"
+
+1525727558 f:\usuarios\alumno\escritorio\parcial flores david\proveedores.h
+
+1526642375 f:\usuarios\alumno\escritorio\parcial flores david\menu.c
+
