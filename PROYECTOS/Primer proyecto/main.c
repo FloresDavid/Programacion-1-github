@@ -8,6 +8,7 @@ int main()
     int numeroUno;
     int numeroDos;
     int numeroTres;
+    int numeroDelMedio;
 
     printf("Ingrese el primer numero: ");
     scanf("%d", &numeroUno);
@@ -18,18 +19,20 @@ int main()
 
     if((numeroUno > numeroDos && numeroUno < numeroTres) || (numeroUno < numeroDos && numeroUno > numeroTres))
     {
-        printf("El numero del medio es el numero: %d", numeroUno);
+        numeroDelMedio = numeroUno;
     }
     else
     {
         if((numeroDos > numeroUno && numeroDos < numeroTres) || (numeroDos < numeroUno && numeroDos > numeroTres))
         {
-            printf("El numero del medio es el numero: %d", numeroDos);
+            numeroDelMedio = numeroDos;
         }
         else
         {
-            printf("El numero del medio es el numero: %d", numeroTres);
+            numeroDelMedio = numeroTres;
         }
     }
+    printf("El numero del medio es el numero: %d", numeroDelMedio);
+
     return 0;
 }
